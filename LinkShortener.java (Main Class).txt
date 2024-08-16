@@ -1,0 +1,43 @@
+import java.util.Scanner;
+
+public class LinkShortener {
+    public static void main(String[] args) {
+        URLShortener urlShortener = new URLShortener();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\nLink Shortener Menu:");
+            System.out.println("1. Shorten URL");
+            System.out.println("2. Expand URL");
+            System.out.println("3. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter the long URL: ");
+                    String longUrl = scanner.nextLine();
+                    String shortUrl = urlShortener.shortenURL(longUrl);
+                    System.out.println("Shortened URL: " + shortUrl);
+                    break;
+                case 2:
+                    System.out.print("Enter the short URL: ");
+                    String shortUrlToExpand = scanner.nextLine();
+                    String originalUrl = urlShortener.expandURL(shortUrlToExpand);
+                    if (originalUrl != null) {
+                        System.out.println("Original URL: " + originalUrl);
+                    } else {
+                        System.out.println("Invalid short URL!");
+                    }
+                    break;
+                case 3:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid choice! Please try again.");
+            }
+        }
+    }
+}

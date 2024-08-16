@@ -1,0 +1,49 @@
+import java.util.HashMap;
+import java.util.Random;
+
+public class URLShortener {
+    private final HashMap<String, String> urlMap;
+    private final String baseDomain;
+    private final String characters;
+    private final int urlLength;
+
+    public URLShortener() {
+        urlMap = new HashMap<>();
+        baseDomain = "http://short.ly/";
+        characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        urlLength = 6;
+    }
+
+    public String shortenURL(String longUrl) {
+        if (urlMap.containsValue(longUrl)) {
+            // If the long URL already exists, return the existing short URL
+            for (HashMap.Entry<String, String> entry : urlMap.entrySet()) {
+                if (entry.getValue().equals(longUrl)) {
+                    return baseDomain + entry.getKey();
+                }
+            }
+        }
+
+        String shortUrlKey;
+        do {
+            shortUrlKey = generateShortKey();
+        } while (urlMap.containsKey(shortUrlKey));
+
+        urlMap.put(shortUrlKey, longUrl);
+        return baseDomain + shortUrlKey;
+    }
+
+    public String expandURL(String shortUrl) {
+        String shortUrlKey = shortUrl.replace(baseDomain, "");
+        return urlMap.get(shortUrlKey);
+    }
+
+    private String generateShortKey() {
+        StringBuilder shortKey = new StringBuilder(urlLength);
+        Random random = new Random();
+        for (int i = 0; i < urlLength; i++) {
+            shortKey.append(characters.charAt(random.nextInt(characters.length())));
+        }
+        return shortKey.toString();
+    }
+}
